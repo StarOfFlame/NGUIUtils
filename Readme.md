@@ -1,4 +1,14 @@
 # NGUIRichText #
+- Wiki: [http://wow.gamepedia.com/UI_escape_sequences](http://wow.gamepedia.com/UI_escape_sequences)
+
+## Examples: ##
+
+|cFFFF0000This is red text |rthis is normal color 
+This is red text this is normal color
+
+|TInterface\\Icons\\INV_Misc_Coin_01:16|t Coins
+01.png Coins
+
 
 # NGUIParticleSystem #
 Particle system plugin for NGUI. 

@@ -48,7 +48,6 @@ public class UIRichText : MonoBehaviour
             LayoutText(mText);
         }
     }
-    public bool AutoHight;
 
     void Start()
     {
@@ -76,7 +75,7 @@ public class UIRichText : MonoBehaviour
 
     void CenterLayout()
     {
-        if (AutoHight)
+		if (Label.overflowMethod == UILabel.Overflow.ResizeHeight)
         {
 			Label.height = (int)Mathf.Round(Mathf.Abs(Postion.y) + CurLineHight);
         }
@@ -236,6 +235,7 @@ public class UIRichText : MonoBehaviour
         label.fontSize = Label.fontSize;
         label.fontStyle = Label.fontStyle;
         label.alignment = Label.alignment;
+		label.overflowMethod = UILabel.Overflow.ResizeFreely;
         label.width = 0;
         label.height = 0;
         label.color = new Color(
@@ -245,7 +245,7 @@ public class UIRichText : MonoBehaviour
             int.Parse(color.Substring(0, 2), System.Globalization.NumberStyles.HexNumber) / 255f);
 
         label.text = text;
-        label.MakePixelPerfect();
+        // label.MakePixelPerfect();
         
         var size = label.printedSize;
         label.transform.SetParent(this.transform, false);

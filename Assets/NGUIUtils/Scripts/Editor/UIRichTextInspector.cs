@@ -13,6 +13,5 @@ public class UIRichTextInspector : Editor
     {        
 		var target = (UIRichText)this.target;
 		target.Text = EditorGUILayout.TextField ("Text", target.Text);
-		target.AutoHight = EditorGUILayout.Toggle ("AutoHight", target.AutoHight);
     }
 }
