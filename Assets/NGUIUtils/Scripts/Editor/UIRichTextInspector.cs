@@ -7,19 +7,12 @@ using System.Reflection;
 
 [CanEditMultipleObjects]
 [CustomEditor(typeof(UIRichText), true)]
-public class UIRichTextInspector : UIWidgetInspector
+public class UIRichTextInspector : Editor
 {
-	string LastText;
-    protected override void DrawCustomProperties ()
+	public override void OnInspectorGUI()
     {        
-		base.DrawCustomProperties();
-		var sp = NGUIEditorTools.DrawProperty("Text", serializedObject, "mText"); 
-		if (LastText != sp.stringValue) 
-		{
-			LastText = sp.stringValue;
-			((UIRichText)target).Text = LastText;
-		}
-
-		NGUIEditorTools.DrawProperty("AutoHight", serializedObject, "AutoHight");        
+		var target = (UIRichText)this.target;
+		target.Text = EditorGUILayout.TextField ("Text", target.Text);
+		target.AutoHight = EditorGUILayout.Toggle ("AutoHight", target.AutoHight);
     }
 }

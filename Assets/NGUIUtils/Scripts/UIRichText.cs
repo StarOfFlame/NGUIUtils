@@ -10,7 +10,7 @@ using System;
 [ExecuteInEditMode]
 [AddComponentMenu("NGUI/UI/NGUI RichText")]
 [RequireComponent(typeof(UILabel))]
-public class UIRichText : UIWidget
+public class UIRichText : MonoBehaviour
 {
     class RichTextNode 
     {
@@ -50,7 +50,7 @@ public class UIRichText : UIWidget
     }
     public bool AutoHight;
 
-    protected override void OnStart()
+    void Start()
     {
         Label = this.GetComponent<UILabel>();
         if (Label == null)
@@ -60,20 +60,17 @@ public class UIRichText : UIWidget
         UpdateText();
     }
 
-    protected virtual void OnUpdate() 
+    void Update() 
     { 
-        base.OnUpdate();
         UpdateText();
     }
 
     void UpdateText()
     {
-        if (this.width == this.LayoutWidth)
+		if (Label.width == this.LayoutWidth)
             return;
         
-        this.LayoutWidth = this.width;
-        Label.width = this.width;
-        Label.height = this.height;
+		this.LayoutWidth = Label.width;
         LayoutText(this.Text);
     }
 
@@ -81,11 +78,10 @@ public class UIRichText : UIWidget
     {
         if (AutoHight)
         {
-            this.height = (int)Mathf.Round(Mathf.Abs(Postion.y) + CurLineHight);
-            Label.height = this.height;
+			Label.height = (int)Mathf.Round(Mathf.Abs(Postion.y) + CurLineHight);
         }
         
-        var offset = new Vector3(-this.LayoutWidth / 2f, this.height / 2f, 0);
+        var offset = new Vector3(-this.LayoutWidth / 2f, Label.height / 2f, 0);
         foreach (var node in CurRichText)
         {
             foreach (var child in node.Children)
