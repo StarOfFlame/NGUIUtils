@@ -1,3 +1,5 @@
+# NGUIRichText #
+
 # NGUIParticleSystem #
 Particle system plugin for NGUI. 
 

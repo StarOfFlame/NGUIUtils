@@ -113,7 +113,7 @@ public class UIParticleSystem : UIWidget
     {
         foreach(var item in Particles)
         {
-            GameObject.Destroy(item.gameObject);
+			NGUITools.Destroy(item.gameObject);
         }
         Particles.Clear();
 
@@ -140,8 +140,15 @@ public class UIParticleSystem : UIWidget
         else
         {
             go = GameObject.Instantiate(Particles[0].gameObject) as GameObject;
+#if UNITY_EDITOR
+#if SHOW_HIDDEN_OBJECTS
+			go.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
+#else
+			go.hideFlags = HideFlags.HideAndDontSave;
+#endif
+#endif
             var oldParticle = go.GetComponent<UIParticle>();
-            GameObject.DestroyImmediate(oldParticle);
+			NGUITools.Destroy(oldParticle);
         }
 
         go.transform.SetParent(this.transform, false);
@@ -169,7 +176,7 @@ public class UIParticleSystem : UIWidget
 
     public void RemoveParticle(UIParticle particle)
     {
-        GameObject.Destroy(particle.gameObject);
+		NGUITools.Destroy(particle.gameObject);
         Particles.Remove(particle);
     }
 }
