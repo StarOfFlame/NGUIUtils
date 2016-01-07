@@ -203,6 +203,8 @@ public class UIRichText : MonoBehaviour
 #endif
 
         var sprite = go.GetComponent<UISprite>();
+		sprite.depth = Label.depth;
+		
         if (Postion.x + sprite.width > this.LayoutWidth)
             Newline();
 
@@ -235,6 +237,8 @@ public class UIRichText : MonoBehaviour
         label.fontSize = Label.fontSize;
         label.fontStyle = Label.fontStyle;
         label.alignment = Label.alignment;
+		label.depth = Label.depth;
+		
 		label.overflowMethod = UILabel.Overflow.ResizeFreely;
         label.width = 0;
         label.height = 0;
