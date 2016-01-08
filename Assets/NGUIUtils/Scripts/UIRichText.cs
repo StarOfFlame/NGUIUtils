@@ -112,7 +112,8 @@ public class UIRichText : UIWidget
 			this.height = (int)Mathf.Round(Mathf.Abs(mPostion.y) + mCurLineHight);
 
 			var position = this.transform.localPosition;
-			position.y += (this.height - height) / 2f;
+			position.y -= (this.height - height) / 2f;
+			this.transform.localPosition = position;
         }
         
 		var offset = new Vector3(-this.mLayoutWidth / 2f, this.height / 2f, 0);
