@@ -42,7 +42,7 @@ public class UIRichText : UIWidget
 				return;
 
 			mText = value;
-			UpdateText();
+			LayoutText(mText);
 		}
 	}
 	
@@ -66,13 +66,16 @@ public class UIRichText : UIWidget
     private int mLayoutWidth;
     private List<RichTextNode> mCurRichText = new List<RichTextNode>();
 
+#if UNITY_EDITOR
 	protected override void OnValidate ()
 	{
 		base.OnValidate();
-		
-		if (NGUITools.GetActive (this))
+		if (NGUITools.GetActive (this)) 
+		{
 			this.mLayoutWidth = 0;
+		}
 	}
+#endif
 
 	protected override void OnStart()
     {
@@ -91,6 +94,12 @@ public class UIRichText : UIWidget
 		if (this.mLayoutWidth == this.width)
 			return;
 
+		if (this.mLabel != null) 
+		{
+			NGUITools.Destroy(this.mLabel.gameObject);
+			this.mLabel = null;
+		}
+
 		this.mLayoutWidth = this.width;
 		LayoutText(this.text);
     }
@@ -99,7 +108,11 @@ public class UIRichText : UIWidget
     {
 		if (mResizeHight)
         {
+			var height = this.height;
 			this.height = (int)Mathf.Round(Mathf.Abs(mPostion.y) + mCurLineHight);
+
+			var position = this.transform.localPosition;
+			position.y += (this.height - height) / 2f;
         }
         
 		var offset = new Vector3(-this.mLayoutWidth / 2f, this.height / 2f, 0);
@@ -125,56 +138,56 @@ public class UIRichText : UIWidget
 
 		mPostion = Vector2.zero;
 		mCurLineHight = 0;
-
-        mCurRichText = ParseText(msg);
-        foreach (var node in mCurRichText)
-        {
-            if (node.Texture != null)
-            {
-                var go = AddTexture(node);
-                node.Children.Add(new KeyValuePair<GameObject, Vector3>(go, go.transform.localPosition));
-            }
-            else
-            {
-                var start = 0;
-                while (start < node.Text.Length)
-                {
-                    bool newLine;
-                    var count = FileLine(node.Text, start, this.mLayoutWidth - mPostion.x, out newLine);
-                    if (count > 0)
-                    {
-                        var go = AddText(node, start, count);
-                        node.Children.Add(new KeyValuePair<GameObject, Vector3>(go, go.transform.localPosition));
-                        
-                        start += count;
-                    }
-                    
-                    if (newLine)
-                        Newline();
-                }
-            }
-        }
-
-        CenterLayout();
-    }
-
-    void ClearText(List<RichTextNode> nodes)
-    {
-        foreach (var node in nodes)
-        {
-            foreach (var child in node.Children)
-            {
-                child.Key.SetActive(false);
+		
+		mCurRichText = ParseText(msg);
+		foreach (var node in mCurRichText)
+		{
+			if (node.Texture != null)
+			{
+				var go = AddTexture(node);
+				node.Children.Add(new KeyValuePair<GameObject, Vector3>(go, go.transform.localPosition));
+			}
+			else
+			{
+				var start = 0;
+				while (start < node.Text.Length)
+				{
+					bool newLine;
+					var count = FileLine(node.Text, start, this.mLayoutWidth - mPostion.x, out newLine);
+					if (count > 0)
+					{
+						var go = AddText(node, start, count);
+						node.Children.Add(new KeyValuePair<GameObject, Vector3>(go, go.transform.localPosition));
+						
+						start += count;
+					}
+					
+					if (newLine)
+						Newline();
+				}
+			}
+		}
+		
+		CenterLayout();
+	}
+	
+	void ClearText(List<RichTextNode> nodes)
+	{
+		foreach (var node in nodes)
+		{
+			foreach (var child in node.Children)
+			{
+				child.Key.SetActive(false);
 				NGUITools.Destroy(child.Key);
-            }
-        }
-        nodes.Clear();
-    }
-
-    void Newline()
-    {
-        mPostion.x = 0;
-        mPostion.y -= mCurLineHight;
+			}
+		}
+		nodes.Clear();
+	}
+	
+	void Newline()
+	{
+		mPostion.x = 0;
+		mPostion.y -= mCurLineHight;
         mCurLineHight = 0;
     }
 
@@ -199,6 +212,9 @@ public class UIRichText : UIWidget
             }
 
             var fontSize = CalculationFontSize(ch.ToString());
+			if (fontSize.x > this.width)
+				throw new InvalidCastException("fontSize.x > this.width");
+
             if (fontSize.x > leftWidth)
             {
                 newLine = true;
