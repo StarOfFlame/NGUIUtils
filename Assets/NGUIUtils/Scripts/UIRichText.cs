@@ -9,9 +9,43 @@ using System;
 // http://wow.gamepedia.com/UI_escape_sequences
 [ExecuteInEditMode]
 [AddComponentMenu("NGUI/UI/NGUI RichText")]
-[RequireComponent(typeof(UILabel))]
-public class UIRichText : MonoBehaviour
+public class UIRichText : UIWidget
 {
+	[HideInInspector][SerializeField] Font mTrueTypeFont;
+	[HideInInspector][SerializeField] UIFont mFont;
+	[HideInInspector][SerializeField] int mFontSize = 16;
+	[HideInInspector][SerializeField] FontStyle mFontStyle = FontStyle.Normal;
+    [HideInInspector][SerializeField] string mText = "";
+	[HideInInspector][SerializeField] bool mApplyGradient = false;
+	[HideInInspector][SerializeField] Color mGradientTop = Color.white;
+	[HideInInspector][SerializeField] Color mGradientBottom = new Color(0.7f, 0.7f, 0.7f);
+	[HideInInspector][SerializeField] UILabel.Effect mEffectStyle = UILabel.Effect.None;
+	[HideInInspector][SerializeField] Color mEffectColor = Color.black;
+	[HideInInspector][SerializeField] Vector2 mEffectDistance = Vector2.one;
+	[HideInInspector][SerializeField] int mSpacingX = 0;
+	[HideInInspector][SerializeField] int mSpacingY = 0;
+	[HideInInspector][SerializeField] bool mUseFloatSpacing = false;
+	[HideInInspector][SerializeField] float mFloatSpacingX = 0;
+	[HideInInspector][SerializeField] float mFloatSpacingY = 0;
+
+	[HideInInspector][SerializeField] bool mResizeHight = false;
+
+	public string text
+	{
+		get
+		{
+			return mText;
+		}
+		set
+		{
+			if (mText == value) 
+				return;
+
+			mText = value;
+			UpdateText();
+		}
+	}
+	
     class RichTextNode 
     {
         public string Text;
@@ -26,62 +60,50 @@ public class UIRichText : MonoBehaviour
         }
     }
 
-    private UILabel Label;
-    private Vector2 Postion;
-    private float CurLineHight;
-    private int LayoutWidth;
-    private List<RichTextNode> CurRichText = new List<RichTextNode>();
+    private UILabel mLabel;
+    private Vector2 mPostion;
+    private float mCurLineHight;
+    private int mLayoutWidth;
+    private List<RichTextNode> mCurRichText = new List<RichTextNode>();
 
-    [HideInInspector][SerializeField] string mText = "";
-    public string Text
+	protected override void OnValidate ()
+	{
+		base.OnValidate();
+		
+		if (NGUITools.GetActive (this))
+			this.mLayoutWidth = 0;
+	}
+
+	protected override void OnStart()
     {
-        get
-        {
-            return mText;
-        }
-        set
-        {
-            if (mText == value) 
-                return;
-
-            mText = value;
-            LayoutText(mText);
-        }
-    }
-
-    void Start()
-    {
-        Label = this.GetComponent<UILabel>();
-        if (Label == null)
-            throw new ArgumentNullException("UILabel not exist!");
-
-        Label.enabled = false;
+		base.OnStart();
         UpdateText();
     }
 
-    void Update() 
-    { 
-        UpdateText();
-    }
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+		UpdateText();
+	}
 
     void UpdateText()
     {
-		if (Label.width == this.LayoutWidth)
-            return;
-        
-		this.LayoutWidth = Label.width;
-        LayoutText(this.Text);
+		if (this.mLayoutWidth == this.width)
+			return;
+
+		this.mLayoutWidth = this.width;
+		LayoutText(this.text);
     }
 
     void CenterLayout()
     {
-		if (Label.overflowMethod == UILabel.Overflow.ResizeHeight)
+		if (mResizeHight)
         {
-			Label.height = (int)Mathf.Round(Mathf.Abs(Postion.y) + CurLineHight);
+			this.height = (int)Mathf.Round(Mathf.Abs(mPostion.y) + mCurLineHight);
         }
         
-        var offset = new Vector3(-this.LayoutWidth / 2f, Label.height / 2f, 0);
-        foreach (var node in CurRichText)
+		var offset = new Vector3(-this.mLayoutWidth / 2f, this.height / 2f, 0);
+        foreach (var node in mCurRichText)
         {
             foreach (var child in node.Children)
             {
@@ -92,20 +114,20 @@ public class UIRichText : MonoBehaviour
     
     void LayoutText(string msg)
     {
-        if (CurRichText != null)
+        if (mCurRichText != null)
         {
-            ClearText(CurRichText);
-            CurRichText = null;
+            ClearText(mCurRichText);
+            mCurRichText = null;
         }
 
         if (string.IsNullOrEmpty(msg))
             return;
 
-		Postion = Vector2.zero;
-		CurLineHight = 0;
+		mPostion = Vector2.zero;
+		mCurLineHight = 0;
 
-        CurRichText = ParseText(msg);
-        foreach (var node in CurRichText)
+        mCurRichText = ParseText(msg);
+        foreach (var node in mCurRichText)
         {
             if (node.Texture != null)
             {
@@ -118,7 +140,7 @@ public class UIRichText : MonoBehaviour
                 while (start < node.Text.Length)
                 {
                     bool newLine;
-                    var count = FileLine(node.Text, start, this.LayoutWidth - Postion.x, out newLine);
+                    var count = FileLine(node.Text, start, this.mLayoutWidth - mPostion.x, out newLine);
                     if (count > 0)
                     {
                         var go = AddText(node, start, count);
@@ -151,15 +173,16 @@ public class UIRichText : MonoBehaviour
 
     void Newline()
     {
-        Postion.x = 0;
-        Postion.y -= CurLineHight;
-        CurLineHight = 0;
+        mPostion.x = 0;
+        mPostion.y -= mCurLineHight;
+        mCurLineHight = 0;
     }
 
     Vector2 CalculationFontSize(string msg)
     {
-        Label.text = msg;
-        return Label.printedSize;
+		var label = GetLabel ();
+		label.text = msg;
+		return label.printedSize;
     } 
 
     int FileLine(string text, int start, float leftWidth, out bool newLine)
@@ -187,6 +210,54 @@ public class UIRichText : MonoBehaviour
         return text.Length - start;
     }
 
+	void HideGameObject(GameObject go)
+	{
+#if UNITY_EDITOR
+#if SHOW_HIDDEN_OBJECTS
+		go.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
+#else
+		go.hideFlags = HideFlags.HideAndDontSave;
+#endif
+#endif
+	}
+
+	UILabel GetLabel()
+	{
+		if (mLabel == null) 
+		{
+			var go = new GameObject();
+			go.layer = this.gameObject.layer;
+			go.SetActive(false);
+			go.transform.SetParent(this.transform, false);
+			HideGameObject(go);
+			
+			var label = go.AddComponent<UILabel>();
+			label.trueTypeFont = this.mTrueTypeFont;
+			label.bitmapFont = this.mFont;
+			label.fontSize = this.mFontSize;
+			label.fontStyle = this.mFontStyle;
+			label.applyGradient = this.mApplyGradient;
+			label.gradientTop = this.mGradientTop;
+			label.gradientBottom = this.mGradientBottom;
+			label.effectStyle = this.mEffectStyle;
+			label.effectColor = this.mEffectColor;
+			label.effectDistance = this.mEffectDistance;
+			label.useFloatSpacing = this.mUseFloatSpacing;
+			label.spacingX = this.mSpacingX;
+			label.spacingY = this.mSpacingY;
+			label.floatSpacingX = this.mFloatSpacingX;
+			label.floatSpacingY = this.mFloatSpacingY;
+
+			label.overflowMethod = UILabel.Overflow.ResizeFreely;
+			label.width = 0;
+			label.height = 0;
+			label.depth = this.depth;
+
+			mLabel = label;
+		}
+		return mLabel;
+	}
+
     GameObject AddTexture(RichTextNode node)
     {
         if (node.Texture == null)
@@ -194,25 +265,19 @@ public class UIRichText : MonoBehaviour
 
         var assert = Resources.Load(node.Texture);
         var go = GameObject.Instantiate(assert) as GameObject;
-#if UNITY_EDITOR
-#if SHOW_HIDDEN_OBJECTS
-        go.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
-#else
-        go.hideFlags = HideFlags.HideAndDontSave;
-#endif
-#endif
+		HideGameObject(go);
 
         var sprite = go.GetComponent<UISprite>();
-		sprite.depth = Label.depth;
+		sprite.depth = mLabel.depth;
 		
-        if (Postion.x + sprite.width > this.LayoutWidth)
+        if (mPostion.x + sprite.width > this.mLayoutWidth)
             Newline();
 
         go.transform.SetParent(this.transform, false);
-        go.transform.localPosition = new Vector3(Postion.x + sprite.width / 2, Postion.y - sprite.height / 2, 0);
+        go.transform.localPosition = new Vector3(mPostion.x + sprite.width / 2, mPostion.y - sprite.height / 2, 0);
         
-        Postion.x += sprite.width;
-        CurLineHight = Mathf.Max(CurLineHight, sprite.height);
+        mPostion.x += sprite.width;
+        mCurLineHight = Mathf.Max(mCurLineHight, sprite.height);
 
         return go;
     }
@@ -222,24 +287,12 @@ public class UIRichText : MonoBehaviour
         var text = node.Text.Substring(start, count);
         var color = node.Color;
 
-        GameObject go = new GameObject(text);
-#if UNITY_EDITOR
-#if SHOW_HIDDEN_OBJECTS
-        go.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
-#else
-        go.hideFlags = HideFlags.HideAndDontSave;
-#endif
-#endif
+		var go = GameObject.Instantiate(mLabel.gameObject) as GameObject;
+		go.name = text;
+		go.SetActive (true);
+		HideGameObject(go);
 
-        var label = go.AddComponent<UILabel>();
-        label.bitmapFont = Label.bitmapFont;
-        label.trueTypeFont = Label.trueTypeFont;
-        label.fontSize = Label.fontSize;
-        label.fontStyle = Label.fontStyle;
-        label.alignment = Label.alignment;
-		label.depth = Label.depth;
-		
-		label.overflowMethod = UILabel.Overflow.ResizeFreely;
+		var label = go.GetComponent<UILabel>();
         label.width = 0;
         label.height = 0;
         label.color = new Color(
@@ -249,11 +302,10 @@ public class UIRichText : MonoBehaviour
             int.Parse(color.Substring(0, 2), System.Globalization.NumberStyles.HexNumber) / 255f);
 
         label.text = text;
-        // label.MakePixelPerfect();
-        
+
         var size = label.printedSize;
         label.transform.SetParent(this.transform, false);
-        label.transform.localPosition = new Vector3(Postion.x + size.x / 2, Postion.y - size.y / 2, 0);
+        label.transform.localPosition = new Vector3(mPostion.x + size.x / 2, mPostion.y - size.y / 2, 0);
 
         if (node.Link != null)
         {
@@ -263,8 +315,8 @@ public class UIRichText : MonoBehaviour
             UIEventListener.Get(go).onClick = node.OnClick;
         }
 
-        Postion.x += size.x;
-        CurLineHight = Mathf.Max(CurLineHight, size.y);
+        mPostion.x += size.x;
+        mCurLineHight = Mathf.Max(mCurLineHight, size.y);
         return go;
     }
 
