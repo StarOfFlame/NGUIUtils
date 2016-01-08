@@ -16,9 +16,6 @@ public class UIRichText : UIWidget
 	[HideInInspector][SerializeField] int mFontSize = 16;
 	[HideInInspector][SerializeField] FontStyle mFontStyle = FontStyle.Normal;
     [HideInInspector][SerializeField] string mText = "";
-	[HideInInspector][SerializeField] bool mApplyGradient = false;
-	[HideInInspector][SerializeField] Color mGradientTop = Color.white;
-	[HideInInspector][SerializeField] Color mGradientBottom = new Color(0.7f, 0.7f, 0.7f);
 	[HideInInspector][SerializeField] UILabel.Effect mEffectStyle = UILabel.Effect.None;
 	[HideInInspector][SerializeField] Color mEffectColor = Color.black;
 	[HideInInspector][SerializeField] Vector2 mEffectDistance = Vector2.one;
@@ -253,9 +250,6 @@ public class UIRichText : UIWidget
 			label.bitmapFont = this.mFont;
 			label.fontSize = this.mFontSize;
 			label.fontStyle = this.mFontStyle;
-			label.applyGradient = this.mApplyGradient;
-			label.gradientTop = this.mGradientTop;
-			label.gradientBottom = this.mGradientBottom;
 			label.effectStyle = this.mEffectStyle;
 			label.effectColor = this.mEffectColor;
 			label.effectDistance = this.mEffectDistance;
@@ -265,6 +259,7 @@ public class UIRichText : UIWidget
 			label.floatSpacingX = this.mFloatSpacingX;
 			label.floatSpacingY = this.mFloatSpacingY;
 
+			label.applyGradient = false;
 			label.overflowMethod = UILabel.Overflow.ResizeFreely;
 			label.width = 0;
 			label.height = 0;

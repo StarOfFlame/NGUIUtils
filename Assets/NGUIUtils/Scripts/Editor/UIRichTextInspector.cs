@@ -199,25 +199,6 @@ public class UIRichTextInspector : UIWidgetInspector
 			NGUIEditorTools.DrawProperty("Resize hight", serializedObject, "mResizeHight");
 			
 			GUILayout.BeginHorizontal();
-			SerializedProperty gr = NGUIEditorTools.DrawProperty("Gradient", serializedObject, "mApplyGradient",
-			                                                     GUILayout.Width(95f));
-			
-			EditorGUI.BeginDisabledGroup(!gr.hasMultipleDifferentValues && !gr.boolValue);
-			{
-				NGUIEditorTools.SetLabelWidth(30f);
-				NGUIEditorTools.DrawProperty("Top", serializedObject, "mGradientTop", GUILayout.MinWidth(40f));
-				GUILayout.EndHorizontal();
-				GUILayout.BeginHorizontal();
-				NGUIEditorTools.SetLabelWidth(50f);
-				GUILayout.Space(79f);
-				
-				NGUIEditorTools.DrawProperty("Bottom", serializedObject, "mGradientBottom", GUILayout.MinWidth(40f));
-				NGUIEditorTools.SetLabelWidth(80f);
-			}
-			EditorGUI.EndDisabledGroup();
-			GUILayout.EndHorizontal();
-			
-			GUILayout.BeginHorizontal();
 			GUILayout.Label("Effect", GUILayout.Width(76f));
 			sp = NGUIEditorTools.DrawProperty("", serializedObject, "mEffectStyle", GUILayout.MinWidth(16f));
 			
