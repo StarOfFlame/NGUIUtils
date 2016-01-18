@@ -62,6 +62,7 @@ public class UIRichText : UIWidget
     private float mCurLineHight;
     private int mLayoutWidth;
     private List<RichTextNode> mCurRichText = new List<RichTextNode>();
+	const string NodeName = "__RichTextNode";
 
 #if UNITY_EDITOR
 	protected override void OnValidate ()
@@ -76,7 +77,10 @@ public class UIRichText : UIWidget
 
 	protected override void OnStart()
     {
+		RemovePrefabItems();
+
 		base.OnStart();
+		this.mLayoutWidth = 0;
         UpdateText();
     }
 
@@ -84,6 +88,27 @@ public class UIRichText : UIWidget
 	{
 		base.OnUpdate();
 		UpdateText();
+	}
+
+	// HideAndDontSave does not work when creating Prefab
+	void RemovePrefabItems()
+	{
+		var remove = new List<GameObject>();
+		foreach (Transform child in this.transform) 
+		{
+			if (child.name != NodeName)
+				continue;
+			
+			if (child.gameObject.hideFlags == HideFlags.None)
+			{
+				remove.Add(child.gameObject);
+			}
+		}
+		
+		foreach (var child in remove) 
+		{
+			NGUITools.Destroy(child);
+		}
 	}
 
     void UpdateText()
@@ -239,7 +264,7 @@ public class UIRichText : UIWidget
 	{
 		if (mLabel == null) 
 		{
-			var go = new GameObject();
+			var go = new GameObject(NodeName);
 			go.layer = this.gameObject.layer;
 			go.SetActive(false);
 			go.transform.SetParent(this.transform, false);
@@ -277,6 +302,7 @@ public class UIRichText : UIWidget
 
         var assert = Resources.Load(node.Texture);
         var go = GameObject.Instantiate(assert) as GameObject;
+		go.name = NodeName;
 		HideGameObject(go);
 
         var sprite = go.GetComponent<UISprite>();
@@ -300,7 +326,7 @@ public class UIRichText : UIWidget
         var color = node.Color;
 
 		var go = GameObject.Instantiate(mLabel.gameObject) as GameObject;
-		go.name = text;
+		go.name = NodeName;
 		go.SetActive (true);
 		HideGameObject(go);
 
