@@ -141,43 +141,43 @@ MonoBehaviour:
     relative: 1
     absolute: 0
   updateAnchors: 1
-  mColor: {r: 1, g: 1, b: 1, a: 1}
+  mColor: {r: .477941155, g: .122999564, b: .122999564, a: 1}
   mPivot: 4
   mWidth: 100
   mHeight: 100
-  mDepth: 0
+  mDepth: 5
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
   Atlas: {fileID: 11400000, guid: 805ff495c81a349baa19f0d673490ce0, type: 2}
-  SpriteName: 
+  SpriteName: ParticleFire
   SimulationSpace: 0
-  MaxParticles: 0
-  Angle: 0
-  AngleVariance: 0
-  Duration: 0
-  StartColor: {r: 0, g: 0, b: 0, a: 0}
-  StartColorVariance: {r: 0, g: 0, b: 0, a: 0}
+  MaxParticles: 250
+  Angle: 90
+  AngleVariance: 10
+  Duration: -1
+  StartColor: {r: .470588207, g: .136499226, b: .0380622894, a: 1}
+  StartColorVariance: {r: .816176474, g: .72615701, b: .72615701, a: 0}
   FinishColor: {r: 0, g: 0, b: 0, a: 0}
-  FinishColorVariance: {r: 0, g: 0, b: 0, a: 0}
-  StartParticleSize: 0
-  StartParticleSizeVariance: 0
+  FinishColorVariance: {r: .639705896, g: .545631468, b: .545631468, a: 0}
+  StartParticleSize: 1
+  StartParticleSizeVariance: .100000001
   FinishParticleSize: 0
   FinishParticleSizeVariance: 0
   SourcePosition: {x: 0, y: 0}
-  SourcePositionVariance: {x: 0, y: 0}
+  SourcePositionVariance: {x: 40, y: 20}
   RotationStart: 0
   RotationStartVariance: 0
   RotationEnd: 0
   RotationEndVariance: 0
-  ParticleLifespan: 0
-  ParticleLifespanVariance: 0
-  EmissionRate: 0
+  ParticleLifespan: 3
+  ParticleLifespanVariance: .25
+  EmissionRate: 80
   EmitterType: 0
   Gravity: {x: 0, y: 0}
-  Speed: 0
-  SpeedVariance: 0
+  Speed: 60
+  SpeedVariance: 20
   RadialAcceleration: 0
   RadialAccelVariance: 0
   TangentialAcceleration: 0
@@ -1166,31 +1166,31 @@ MonoBehaviour:
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
-  Atlas: {fileID: 0}
-  SpriteName: 
+  Atlas: {fileID: 11400000, guid: 805ff495c81a349baa19f0d673490ce0, type: 2}
+  SpriteName: ParticleFire
   SimulationSpace: 0
-  MaxParticles: 0
+  MaxParticles: 200
   Angle: 0
-  AngleVariance: 0
-  Duration: 0
-  StartColor: {r: 0, g: 0, b: 0, a: 0}
+  AngleVariance: 360
+  Duration: -1
+  StartColor: {r: 0, g: 0, b: 0, a: 1}
   StartColorVariance: {r: 0, g: 0, b: 0, a: 0}
-  FinishColor: {r: 0, g: 0, b: 0, a: 0}
+  FinishColor: {r: .529411793, g: .140138417, b: .357594669, a: 0}
   FinishColorVariance: {r: 0, g: 0, b: 0, a: 0}
-  StartParticleSize: 0
-  StartParticleSizeVariance: 0
-  FinishParticleSize: 0
-  FinishParticleSizeVariance: 0
+  StartParticleSize: .400000006
+  StartParticleSizeVariance: .200000003
+  FinishParticleSize: .100000001
+  FinishParticleSizeVariance: .100000001
   SourcePosition: {x: 0, y: 0}
   SourcePositionVariance: {x: 0, y: 0}
   RotationStart: 0
   RotationStartVariance: 0
   RotationEnd: 0
   RotationEndVariance: 0
-  ParticleLifespan: 0
-  ParticleLifespanVariance: 0
-  EmissionRate: 0
-  EmitterType: 0
+  ParticleLifespan: 5
+  ParticleLifespanVariance: 5
+  EmissionRate: 100
+  EmitterType: 1
   Gravity: {x: 0, y: 0}
   Speed: 0
   SpeedVariance: 0
@@ -1199,12 +1199,12 @@ MonoBehaviour:
   TangentialAcceleration: 0
   TangentialAccelVariance: 0
   RotationIsDir: 0
-  StartRadius: 0
-  StartRadiusVariance: 0
+  StartRadius: 100
+  StartRadiusVariance: 100
   FinishRadius: 0
   FinishRadiusVariance: 0
-  RotatePerSecond: 0
-  RotatePerSecondVariance: 0
+  RotatePerSecond: 20
+  RotatePerSecondVariance: 20
 --- !u!1 &700284735
 GameObject:
   m_ObjectHideFlags: 0
@@ -1270,34 +1270,34 @@ MonoBehaviour:
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
-  Atlas: {fileID: 0}
-  SpriteName: 
+  Atlas: {fileID: 11400000, guid: 805ff495c81a349baa19f0d673490ce0, type: 2}
+  SpriteName: ParticleSnow
   SimulationSpace: 0
-  MaxParticles: 0
-  Angle: 0
-  AngleVariance: 0
-  Duration: 0
-  StartColor: {r: 0, g: 0, b: 0, a: 0}
-  StartColorVariance: {r: 0, g: 0, b: 0, a: 0}
-  FinishColor: {r: 0, g: 0, b: 0, a: 0}
-  FinishColorVariance: {r: 0, g: 0, b: 0, a: 0}
-  StartParticleSize: 0
-  StartParticleSizeVariance: 0
-  FinishParticleSize: 0
-  FinishParticleSizeVariance: 0
+  MaxParticles: 250
+  Angle: 273
+  AngleVariance: 27
+  Duration: -1
+  StartColor: {r: .985294104, g: .999783695, b: .999783695, a: 1}
+  StartColorVariance: {r: .00735294819, g: .00665009301, b: .00665009301, a: .612999976}
+  FinishColor: {r: .367647052, g: .356833905, b: .356833905, a: 1}
+  FinishColorVariance: {r: .00735294819, g: .00675822422, b: .00675822422, a: 0}
+  StartParticleSize: .100000001
+  StartParticleSizeVariance: .100000001
+  FinishParticleSize: .100000001
+  FinishParticleSizeVariance: .0399999991
   SourcePosition: {x: 0, y: 0}
-  SourcePositionVariance: {x: 0, y: 0}
+  SourcePositionVariance: {x: 160, y: 5}
   RotationStart: 0
-  RotationStartVariance: 0
+  RotationStartVariance: 90
   RotationEnd: 0
-  RotationEndVariance: 0
+  RotationEndVariance: 90
   ParticleLifespan: 0
-  ParticleLifespanVariance: 0
-  EmissionRate: 0
+  ParticleLifespanVariance: 2
+  EmissionRate: 270
   EmitterType: 0
-  Gravity: {x: 0, y: 0}
-  Speed: 0
-  SpeedVariance: 0
+  Gravity: {x: 0, y: -150}
+  Speed: 10
+  SpeedVariance: 60
   RadialAcceleration: 0
   RadialAccelVariance: 0
   TangentialAcceleration: 0
@@ -1405,7 +1405,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   mFont: {fileID: 0}
-  mText: Ring
+  mText: Vortex
   mFontSize: 56
   mFontStyle: 2
   mAlignment: 0
@@ -1880,20 +1880,20 @@ MonoBehaviour:
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
-  Atlas: {fileID: 0}
-  SpriteName: 
+  Atlas: {fileID: 11400000, guid: 805ff495c81a349baa19f0d673490ce0, type: 2}
+  SpriteName: ParticleFire
   SimulationSpace: 0
-  MaxParticles: 0
+  MaxParticles: 500
   Angle: 0
-  AngleVariance: 0
-  Duration: 0
-  StartColor: {r: 0, g: 0, b: 0, a: 0}
-  StartColorVariance: {r: 0, g: 0, b: 0, a: 0}
-  FinishColor: {r: 0, g: 0, b: 0, a: 0}
-  FinishColorVariance: {r: 0, g: 0, b: 0, a: 0}
+  AngleVariance: 360
+  Duration: .100000001
+  StartColor: {r: .507352948, g: .342694789, b: .134299323, a: 1}
+  StartColorVariance: {r: 0, g: 0, b: 0, a: 1}
+  FinishColor: {r: .323529422, g: .276246876, b: .0118944561, a: 1}
+  FinishColorVariance: {r: 0, g: 0, b: 0, a: 1}
   StartParticleSize: 0
   StartParticleSizeVariance: 0
-  FinishParticleSize: 0
+  FinishParticleSize: .200000003
   FinishParticleSizeVariance: 0
   SourcePosition: {x: 0, y: 0}
   SourcePositionVariance: {x: 0, y: 0}
@@ -1902,11 +1902,11 @@ MonoBehaviour:
   RotationEnd: 0
   RotationEndVariance: 0
   ParticleLifespan: 0
-  ParticleLifespanVariance: 0
-  EmissionRate: 0
+  ParticleLifespanVariance: 1
+  EmissionRate: 100000
   EmitterType: 0
   Gravity: {x: 0, y: 0}
-  Speed: 0
+  Speed: 72
   SpeedVariance: 0
   RadialAcceleration: 0
   RadialAccelVariance: 0
@@ -2120,34 +2120,34 @@ MonoBehaviour:
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
-  Atlas: {fileID: 0}
-  SpriteName: 
+  Atlas: {fileID: 11400000, guid: 805ff495c81a349baa19f0d673490ce0, type: 2}
+  SpriteName: ParticleFire
   SimulationSpace: 0
-  MaxParticles: 0
+  MaxParticles: 300
   Angle: 0
-  AngleVariance: 0
-  Duration: 0
-  StartColor: {r: 0, g: 0, b: 0, a: 0}
+  AngleVariance: 182
+  Duration: -1
+  StartColor: {r: .514705896, g: .185445502, b: .369377255, a: .675000012}
   StartColorVariance: {r: 0, g: 0, b: 0, a: 0}
-  FinishColor: {r: 0, g: 0, b: 0, a: 0}
+  FinishColor: {r: .466409177, g: .720588207, b: .222534597, a: .916000009}
   FinishColorVariance: {r: 0, g: 0, b: 0, a: 0}
-  StartParticleSize: 0
-  StartParticleSizeVariance: 0
-  FinishParticleSize: 0
+  StartParticleSize: .5
+  StartParticleSizeVariance: .600000024
+  FinishParticleSize: .319999993
   FinishParticleSizeVariance: 0
   SourcePosition: {x: 0, y: 0}
-  SourcePositionVariance: {x: 0, y: 0}
+  SourcePositionVariance: {x: 10, y: 10}
   RotationStart: 0
   RotationStartVariance: 0
   RotationEnd: 0
   RotationEndVariance: 0
-  ParticleLifespan: 0
-  ParticleLifespanVariance: 0
-  EmissionRate: 0
+  ParticleLifespan: 3
+  ParticleLifespanVariance: 5
+  EmissionRate: 150
   EmitterType: 0
   Gravity: {x: 0, y: 0}
-  Speed: 0
-  SpeedVariance: 0
+  Speed: 98
+  SpeedVariance: 210
   RadialAcceleration: 0
   RadialAccelVariance: 0
   TangentialAcceleration: 0

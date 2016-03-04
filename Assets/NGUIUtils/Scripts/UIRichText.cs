@@ -1,4 +1,4 @@
-// #define SHOW_HIDDEN_OBJECTS
+#define SHOW_HIDDEN_OBJECTS
 
 using UnityEngine;
 using System.Collections;
@@ -39,7 +39,7 @@ public class UIRichText : UIWidget
 				return;
 
 			mText = value;
-			LayoutText(mText);
+			//LayoutText(mText);
 		}
 	}
 	
@@ -53,7 +53,7 @@ public class UIRichText : UIWidget
         public List<KeyValuePair<GameObject, Vector3>> Children = new List<KeyValuePair<GameObject, Vector3>>(); 
         public void OnClick(GameObject go)
         {
-            go.transform.parent.SendMessage("OnRichTextClick", Link, SendMessageOptions.DontRequireReceiver);
+            go.transform.parent.parent.SendMessage("OnRichTextClick", Link, SendMessageOptions.DontRequireReceiver);
         }
     }
 
@@ -183,6 +183,10 @@ public class UIRichText : UIWidget
 						node.Children.Add(new KeyValuePair<GameObject, Vector3>(go, go.transform.localPosition));
 						
 						start += count;
+					}
+					else
+					{
+						start++;
 					}
 					
 					if (newLine)
@@ -401,11 +405,6 @@ public class UIRichText : UIWidget
             var cur = text[index];
             switch (cur)
             {
-                case '|':
-                    AddText(nodes, "|", currentColor, currentLink);
-                    start = index + 1;
-                    break;
-
                 case 'n':
                     AddText(nodes, "\n", currentColor, currentLink);
                     start = index + 1;
@@ -426,31 +425,63 @@ public class UIRichText : UIWidget
                 {
                     index++;
                     var nextIndex = text.IndexOf("|t", index);
-
-                    var node = new RichTextNode();
-                    node.Texture = text.Substring(index, nextIndex - index);
-                    nodes.Add(node);
-                    
-                    start = nextIndex + 2;
-                    break;
-                }
-
-                case 'H':
+				    if (nextIndex == -1)
+				    {
+						start = index;
+						AddText(nodes, "|T", currentColor, currentLink);
+				    }
+				    else
+				    {
+	                    var node = new RichTextNode();
+	                    node.Texture = text.Substring(index, nextIndex - index);
+						if (null != Resources.Load(node.Texture))
+						{
+							nodes.Add(node);
+						}
+						else
+						{
+							AddText(nodes, "|T" + node.Texture + "|t", currentColor, currentLink);
+						}
+						start = nextIndex + 2;
+					}
+					break;
+				}
+				
+			case 'H':
                 {
                     index++;
                     var nextIndex = text.IndexOf("|h", index);
-                    currentLink = text.Substring(index, nextIndex - index);
-                    start = nextIndex + 2;
+					if (nextIndex == -1)
+					{
+						start = index;
+						AddText(nodes, "|H", currentColor, currentLink);
+					}
+					else
+					{
+						currentLink = text.Substring(index, nextIndex - index);
+						start = nextIndex + 2;
+					}
                     break;
                 }
 
                 case 'h':
                     if (currentLink == null)
-                        throw new FormatException("currentLink == null");
-
-                    currentLink = null;
-                    start = index + 1;
+				    {
+						start = index + 1;
+						AddText(nodes, "|h", currentColor, currentLink);
+				    }
+					else
+					{
+						currentLink = null;
+						start = index + 1;
+					}
                     break;
+
+				default :
+					AddText(nodes, "|" + cur.ToString(), currentColor, currentLink);
+					start = index + 1;
+					break;
+
             }
         }
         return nodes;
